@@ -1,0 +1,6 @@
+data/
+.verify-data/
+__pycache__/
+*.pyc
+.venv/
+*.qoder.site
