@@ -12,7 +12,7 @@
 | 代码仓库 | <https://github.com/cheng200606/zhixu-qoder> |
 | 分支 | `main` |
 | 提交 commit | 见仓库最新提交（提交表单中给出完整 40 位 SHA） |
-| Qoder 账号 UID | 待填入（见 `docs/qoder-dev-record.md`） |
+| Qoder 账号 UID | `aliyun-1322590677332578` |
 
 ## 解决什么问题
 
