@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>知序 · 把资料组装成 AI 能用的上下文</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="28" height="28"><path d="M6 5h20v22H6z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 11h12M10 16h12M10 21h7" stroke="currentColor" stroke-width="2"/></svg>
+      </span>
+      <span class="name">知序</span>
+      <span class="latin">ZHIXU</span>
+    </div>
+    <div class="topbar-meta">
+      <span class="pill" id="connPill"><i class="dot"></i><span id="connText">连接中…</span></span>
+      <a class="ghost" href="http://127.0.0.1:18080/docs" target="_blank" rel="noreferrer">PowerContext API</a>
+    </div>
+  </header>
+
+  <main class="shell">
+    <aside class="sidebar">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>知识库</h2>
+          <button class="link" id="newScopeBtn">+ 新建</button>
+        </div>
+        <ul class="scope-list" id="scopeList"></ul>
+        <form class="scope-form" id="scopeForm" hidden>
+          <input id="scopeTitle" placeholder="知识库名称，如「论文阅读」" maxlength="120">
+          <div class="row">
+            <button class="primary small" type="submit">创建</button>
+            <button class="link" type="button" id="cancelScope">取消</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel grow">
+        <div class="panel-head">
+          <h2>资料 <span class="count" id="docCount">0</span></h2>
+          <button class="link" id="openImport">导入</button>
+        </div>
+        <ul class="doc-list" id="docList"></ul>
+        <div class="empty" id="docEmpty">
+          <p>这个知识库还没有资料。</p>
+          <button class="primary small" id="seedBtn">一键载入示例知识库</button>
+        </div>
+      </section>
+
+      <section class="panel status">
+        <div class="panel-head"><h2>运行状态</h2></div>
+        <dl class="stats">
+          <div><dt>记忆后端</dt><dd id="statBackend">—</dd></div>
+          <div><dt>检索方式</dt><dd id="statModes">—</dd></div>
+          <div><dt>PowerContext</dt><dd id="statVersion">—</dd></div>
+          <div><dt>数据库</dt><dd class="mono" id="statDb">—</dd></div>
+        </dl>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <div class="hero">
+        <p class="eyebrow">POWERED BY POWERCONTEXT</p>
+        <h1>把散落的资料，<em>组装成</em><br>AI 能直接用的上下文。</h1>
+        <p class="lede">笔记、文档、会议纪要写入 PowerContext 长期记忆。检索返回可回查的引用，再按字节预算组装成一段可直接粘贴给任意 AI 的背景材料。</p>
+      </div>
+
+      <form class="searchbar" id="searchForm">
+        <input id="query" placeholder="问点什么，例如：seekdb 的向量检索怎么用？" autocomplete="off">
+        <button class="primary" type="submit">检索</button>
+      </form>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="results" role="tab">检索结果</button>
+        <button class="tab" data-tab="context" role="tab">上下文包</button>
+        <button class="tab" data-tab="raw" role="tab">原始响应</button>
+        <span class="tab-note" id="tabNote">检索由 PowerContext Server 执行</span>
+      </div>
+
+      <div class="tab-panel active" id="panel-results">
+        <div class="results-head">
+          <span id="searchState">输入问题，开始在知识库中检索。</span>
+          <span class="mode-chip" id="searchMode" hidden></span>
+        </div>
+        <div class="suggest" id="suggest">
+          <p>试试这些问法</p>
+          <div class="chips">
+            <button data-q="seekdb 的向量检索怎么用？">seekdb 向量检索</button>
+            <button data-q="PowerContext 怎么保存跨会话记忆？">跨会话记忆</button>
+            <button data-q="大赛提测有哪些限制？">提测限制</button>
+            <button data-q="把资料组装成 AI 上下文要注意什么？">上下文组装</button>
+          </div>
+        </div>
+        <ol class="results" id="results"></ol>
+      </div>
+
+      <div class="tab-panel" id="panel-context">
+        <div class="context-controls">
+          <label for="budget">上下文预算 <b id="budgetValue">2400</b> bytes</label>
+          <input type="range" id="budget" min="800" max="8000" step="200" value="2400">
+          <button class="primary small" id="prepareBtn">组装上下文</button>
+        </div>
+        <div class="context-grid">
+          <div class="context-body">
+            <div class="context-meta"><span id="contextState">尚未组装</span><button class="link" id="copyContext" hidden>复制</button></div>
+            <pre class="context-pre" id="contextPre">给定一个查询，知序会调用 PowerContext 的 prepare_context，
+返回严格按 UTF-8 字节预算裁剪、带引用、可直接放进模型消息的历史上下文。</pre>
+          </div>
+          <aside class="citation-box">
+            <h3>引用清单</h3>
+            <ul id="citationList"><li class="muted">组装后显示每条引用。</li></ul>
+          </aside>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panel-raw">
+        <div class="raw-head">
+          <span class="mono" id="rawEndpoint">—</span>
+          <button class="link" id="copyRaw" hidden>复制 JSON</button>
+        </div>
+        <pre class="raw-pre" id="rawPre">发起一次检索或上下文组装后，这里显示知序后端收到的 PowerContext 原始响应。</pre>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="importDialog">
+    <form method="dialog" class="dialog-body" id="importForm">
+      <div class="dialog-head">
+        <h2>导入资料</h2>
+        <button class="icon" value="cancel" aria-label="关闭">×</button>
+      </div>
+      <label>标题<input id="docTitle" maxlength="200" placeholder="例如：seekdb 向量检索笔记"></label>
+      <label>类型
+        <select id="docKind">
+          <option value="note">笔记</option>
+          <option value="document">文档</option>
+          <option value="meeting">会议纪要</option>
+          <option value="code">代码片段</option>
+        </select>
+      </label>
+      <label>内容<textarea id="docContent" rows="9" placeholder="粘贴正文。导入后会写入 PowerContext 记忆，可跨重启检索。"></textarea></label>
+      <div class="dialog-foot">
+        <label class="file">上传 txt / md / pdf<input type="file" id="docFile" accept=".txt,.md,.markdown,.pdf"></label>
+        <button class="primary" type="button" id="saveDoc">写入记忆</button>
+      </div>
+      <p class="hint">文件上传会解析为文本后写入当前知识库；PDF 按页导入。</p>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
