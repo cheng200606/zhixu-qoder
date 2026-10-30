@@ -9,10 +9,13 @@
 | 项目 | 地址 |
 |---|---|
 | 网站（Qoder Sites，任何人可访问） | <https://zhixu-context-lj5e49q4pu7.qoder.website> |
-| 代码仓库 | <https://github.com/cheng200606/zhixu-qoder> |
-| 分支 | `main` |
-| 提交 commit | 见仓库最新提交（提交表单中给出完整 40 位 SHA） |
+| 提交仓库 | <https://github.com/cheng200606/powercontext2026> |
+| 提交分支 | `2026-competition-ecosystem`（基于官方同名分支，项目资产在 `qoder/`） |
+| 提交 commit | 见测评平台填写值（`2026-competition-ecosystem` 的最新提交） |
+| 公开镜像（便于浏览） | <https://github.com/cheng200606/zhixu-qoder> |
 | Qoder 账号 UID | `aliyun-1322590677332578` |
+
+提交仓库为比赛私有仓库，评测方按参赛信息中登记的 PAT 读取；上表中的公开镜像与本项目内容相同，方便直接浏览代码。
 
 ## 解决什么问题
 
@@ -59,6 +62,13 @@ python -m venv .venv
 # source .venv/bin/activate
 pip install -r requirements.txt
 python run.py
+```
+
+上面的公开镜像与本项目完全同源。若使用提交仓库，则下载 `2026-competition-ecosystem` 分支后在 `qoder/` 目录执行同样的命令：
+
+```bash
+git clone -b 2026-competition-ecosystem https://github.com/cheng200606/powercontext2026.git
+cd powercontext2026/qoder
 ```
 
 `run.py` 会同时启动 PowerContext Server（18080）和知序（18000），并打开浏览器；按 `Ctrl+C` 一起停止。
