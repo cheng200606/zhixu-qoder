@@ -1,0 +1,64 @@
+INFO:     Started server process [28772]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18180 (Press CTRL+C to quit)
+[zhixu] PowerContext Server: http://127.0.0.1:18180  data=D:\ProfessionalSoftware\Project\oceanbase\powercontext2026\qoder\.verify-data
+INFO:     127.0.0.1:52075 - "GET /health/ready HTTP/1.1" 200 OK
+INFO:     Started server process [9896]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18100 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52079 - "GET /v1/capabilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "GET /v1/scopes?limit=100 HTTP/1.1" 200 OK
+[zhixu] app: http://127.0.0.1:18100  PowerContext=http://127.0.0.1:18180
+INFO:     127.0.0.1:52076 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "GET /v1/capabilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "GET /v1/scopes?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52080 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/scopes HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52081 - "POST /api/scopes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/entries/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/remember HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52082 - "POST /api/scopes/scp_2h0ps04gfs2tdgkpxz1bda4fer/seed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/entries/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52083 - "GET /api/scopes/scp_2h0ps04gfs2tdgkpxz1bda4fer/documents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/memory/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52084 - "POST /api/scopes/scp_2h0ps04gfs2tdgkpxz1bda4fer/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52079 - "POST /v1/context/prepare HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52085 - "POST /api/scopes/scp_2h0ps04gfs2tdgkpxz1bda4fer/prepare HTTP/1.1" 200 OK
+INFO:     Started server process [10244]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18180 (Press CTRL+C to quit)
+[zhixu] PowerContext Server: http://127.0.0.1:18180  data=D:\ProfessionalSoftware\Project\oceanbase\powercontext2026\qoder\.verify-data
+INFO:     127.0.0.1:63716 - "GET /health/ready HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63721 - "POST /v1/memory/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63720 - "POST /api/scopes/scp_2h0ps04gfs2tdgkpxz1bda4fer/search HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63721 - "GET /v1/scopes?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63722 - "GET /api/scopes HTTP/1.1" 200 OK
+== 启动真实 PowerContext Server + 知序 ==
+[PASS] PowerContext Server 就绪 — http://127.0.0.1:18180
+[PASS] 知序 Web 应用就绪 — http://127.0.0.1:18100
+[PASS] 状态接口返回连接成功
+[PASS] 后端为 PowerContext 1.2.0 且支持 FTS — version=1.2.0 modes=['auto', 'fts']
+[PASS] 创建 Scope — scp_2h0ps04gfs2tdgkpxz1bda4fer
+[PASS] 导入 8 篇示例资料到 PowerContext 记忆 — {'seeded': 8, 'skipped': False, 'count': 8}
+[PASS] 条目列表可回查 — count=8
+[PASS] FTS 检索命中并返回 citation — mode=fts hits=5
+[PASS] 检索引用可回查到已存条目
+[PASS] PreparedContext 状态 ready 且不超预算 — bytes=1800
+[PASS] 上下文包含引用条目 — citations=1
+== 重启 PowerContext Server，验证持久化 ==
+[PASS] Server 重启就绪 — http://127.0.0.1:18180
+[PASS] 重启后同一 Scope 仍可检索 — hits=5
+[PASS] 重启后知识库仍在
+[PASS] SQLite 数据库文件已落盘 — 4096 bytes
+
+通过 15 项，失败 0 项。
